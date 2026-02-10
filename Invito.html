@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Sorpresa ❤️</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #d6336c;
+    }
+
+    button {
+      background: #d6336c;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    button:hover {
+      background: #ad2957;
+    }
+
+    /* IMMAGINE FINALE (NASCOSTA FINO ALLA FINE) */
+    #finalImage {
+      margin-top: 20px;
+      width: 100%;
+      border-radius: 15px;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    /* BARRA DI PROGRESSO */
+    #progress {
+      width: 100%;
+      height: 10px;
+      background: #f1c4d8;
+      border-radius: 10px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    #progressBar {
+      height: 100%;
+      width: 0%;
+      background: #d6336c;
+      transition: width 0.4s ease;
+    }
+
+    #nextBtn,
+    #finalQuestion,
+    #answers,
+    #sadCat {
+      display: none;
+    }
+
+    img.gif {
+      width: 100%;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    /* POPUP SÌ */
+    #yesPopup {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #yesPopup .popup-content {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 400px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <h1>Ho una sorpresa per te 💕</h1>
+
+    <p id="question"></p>
+
+    <button id="answerBtn" onclick="answer()">Rispondo!</button>
+
+    <!-- BARRA DI PROGRESSO -->
+    <div id="progress">
+      <div id="progressBar"></div>
+    </div>
+
+    <!-- IMMAGINE FINALE -->
+    <img id="finalImage" src="sorpresa.JPEG" alt="La nostra sorpresa ❤️">
+
+    <button id="nextBtn" onclick="showFinalQuestion()">Seguente ➡️</button>
+
+    <!-- DOMANDA FINALE -->
+    <div id="finalQuestion">
+      <h2>Vuoi cenare insieme a me questo Sabato? 💖</h2>
+      <div id="answers">
+        <button onclick="yesAnswer()">SÌ 💘</button>
+        <button onclick="noAnswer()">NO 😢</button>
+      </div>
+    </div>
+
+    <!-- GATTO TRISTE -->
+    <div id="sadCat">
+      <p>😿 Daiii, ripensaci…</p>
+      <img src="gatto.gif" class="gif" alt="Gatto che piange">
+      <button onclick="goBack()">Torna alla domanda</button>
+    </div>
+  </div>
+
+  <!-- POPUP SÌ -->
+  <div id="yesPopup">
+    <div class="popup-content">
+      <h2>Yeeee! 🎉💖</h2>
+      <p>Scrivere a Sebastian per ulteriori informazioni 😘</p>
+      <img src="gatto_si.gif" class="gif" alt="Gatto che salta">
+      <button onclick="resetAll()">Chiudi</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      "Ti ricordi la nostra birra insieme?",
+      "Secondo te che artista o genere di musica mi fa' impazzire?",
+      "Se dovessi scegliere un luogo di roma, quale sarebbe?",
+      "Se potessi partire ora, dove ti piacerebbe andare?",
+      "Preferisci una serata tranquilla o un'avventura?",
+      "Dolce o salato?",
+      "Mare o montagna?",
+      "Film o serie TV?",
+      "Candele o luci soffuse?",
+      "Sei pronta a scoprire tutto? ✨"
+    ];
+
+    let current = 0;
+
+    const questionEl = document.getElementById('question');
+    const imageEl = document.getElementById('finalImage');
+    const nextBtn = document.getElementById('nextBtn');
+    const answerBtn = document.getElementById('answerBtn');
+    const progressBar = document.getElementById('progressBar');
+    const progress = document.getElementById('progress');
+
+    questionEl.textContent = questions[current];
+
+    function answer() {
+      current++;
+
+      const percent = (current / questions.length) * 100;
+      progressBar.style.width = percent + '%';
+
+      if (current < questions.length) {
+        questionEl.textContent = questions[current];
+      } else {
+        questionEl.innerHTML = "<strong>Sorpresa! 🎁</strong>";
+        progress.style.display = 'none';
+
+        imageEl.style.opacity = 1;
+        answerBtn.style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+      }
+    }
+
+    function showFinalQuestion() {
+      imageEl.style.display = 'none';
+      nextBtn.style.display = 'none';
+      document.getElementById('finalQuestion').style.display = 'block';
+      document.getElementById('answers').style.display = 'block';
+    }
+
+    function yesAnswer() {
+      document.getElementById('yesPopup').style.display = 'flex';
+    }
+
+    function noAnswer() {
+      document.getElementById('finalQuestion').style.display = 'none';
+      document.getElementById('sadCat').style.display = 'block';
+    }
+
+    function goBack() {
+      document.getElementById('sadCat').style.display = 'none';
+      document.getElementById('finalQuestion').style.display = 'block';
+    }
+
+    /* RESET TOTALE */
+    function resetAll() {
+      current = 0;
+
+      questionEl.textContent = questions[current];
+      progressBar.style.width = '0%';
+      progress.style.display = 'block';
+
+      imageEl.style.display = 'block';
+      imageEl.style.opacity = 0;
+
+      answerBtn.style.display = 'inline-block';
+      nextBtn.style.display = 'none';
+
+      document.getElementById('finalQuestion').style.display = 'none';
+      document.getElementById('sadCat').style.display = 'none';
+      document.getElementById('yesPopup').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
